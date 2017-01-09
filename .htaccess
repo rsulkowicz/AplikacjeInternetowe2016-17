@@ -1,0 +1,12 @@
+#konfiguracja serwera Apache
+
+#włączenie modułu Mod Rewrite umożliwiającego "skracanie linków"
+RewriteEngine on
+
+#sprawdzenie czy zawartość adresu nie prowadzi do pliku
+RewriteCond %{REQUEST_FILENAME} !-f
+#sprawdzenie czy zawartość adresu nie prowadzi do katalogu
+RewriteCond %{REQUEST_FILENAME} !-d
+
+#regula adresu 
+RewriteRule ^(.*)$ index.php?rt=$1 [L,QSA] 
