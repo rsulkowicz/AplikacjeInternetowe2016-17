@@ -19,7 +19,7 @@ class database
     {
         if(!self::$db) 
         {
-            self::$db=new PDO('mysql:host=localhost;dbname=ksiegarnia;charset=utf8','ksiegarnia','qwerty');
+            self::$db=new PDO('mysql:host=serwer1789548.home.pl;dbname=22870910_0000001;charset=utf8','22870910_0000001','R;4NLnL.146.');
             return new database();
         }
     }
@@ -163,7 +163,7 @@ class database
     //pobranie wszystkich roli użytkownika
     public static function userRoles($login)
     {
-        $stmt = self::$db->prepare("SELECT r.name FROM uzytkownik u 	
+        $stmt = self::$db->prepare("SELECT r.nazwa FROM uzytkownik u 	
 		INNER JOIN uzytkownik_role ur on(u.id = ur.id_uzytkownik)
 		INNER JOIN role r on(ur.id_role = r.id)
 		WHERE	u.login = ?");
@@ -191,7 +191,7 @@ class database
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
             $kategoria = new Kategoria();
-            $kategoria->setIdKategorii($result['id_kategoria']);
+            $kategoria->setIdKategoria($result['id_kategoria']);
             $kategoria->setNazwa($result['nazwa']);
             return $kategoria;
         }
@@ -221,7 +221,7 @@ class database
     public static function deleteKategoria($kategoria)
     {
         $stmt = self::$db->prepare('DELETE FROM kategoria WHERE id_kategoria=?');
-        $stmt->execute(array($kategoria->getIdKategorii()));
+        $stmt->execute(array($kategoria->getIdKategoria()));
         $affected_rows = $stmt->rowCount();
         if ($affected_rows == 1) {
             return TRUE;
@@ -233,7 +233,7 @@ class database
     public static function updateKategoria($kategoria)
     {
         $stmt = self::$db->prepare('UPDATE kategoria set nazwa=? WHERE id_kategoria=?');
-        $stmt->execute(array($kategoria->getNazwa(), $kategoria->getIdKategorii()));
+        $stmt->execute(array($kategoria->getNazwa(), $kategoria->getIdKategoria()));
         $affected_rows = $stmt->rowCount();
         if ($affected_rows == 1)
         {
@@ -256,28 +256,33 @@ class database
         {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
-            $produkt = new Pozycja();
-            $produkt->setIdPozycja($result['id_pozycja']);
-            $produkt->setNazwa($result['nazwa']);
-            $produkt->setIdKategorii($result['id_kategoria']);
-            $produkt->setKategoria(self::getKategoriaById($result['id_kategoria']));
-            $produkt->setCena($result['cena']);
-            $produkt->setOpis($result['opis']);
-            return $produkt;
+            $pozycja = new Pozycja();
+            $pozycja->setIdPozycja($result['id_pozycja']);
+            $pozycja->setTytuł($result['tytuł']);
+            $pozycja->setRokWydania($result['rok_wydania']);
+            $pozycja->setIdAutor($result['id_autor']);
+            $pozycja->setAutor(self::getAutorById($result['id_autor']));
+            $pozycja->setIdKategoria($result['id_kategoria']);
+            $pozycja->setKategoria(self::getKategoriaById($result['id_kategoria']));
+            $pozycja->setCena($result['cena']);
+            $pozycja->setOpis($result['opis']);
+            return $pozycja;
         }
     }
     
     //Dodanie pozycji
     public static function addPozycja($pozycja)
     {
-        $stmt = self::$db->prepare("INSERT INTO pozycja(nazwa,cena,id_kategoria,opis) "
-                . "VALUES(:nazwa , :cena, :id_kategoria, :opis)");
-        $stmt->execute(array(
-            ':nazwa' => $pozycja->getNazwa(),
-            ':id_kategorii' => $pozycja->getIdKategorii(),
+        $stmt = self::$db->prepare('INSERT INTO pozycja(tytuł, rok_wydania, id_autor, cena, opis, id_kategoria) '
+                . 'VALUES(:tytuł, :rok_wydania, :id_autor, :cena, :opis, :id_kategoria)');
+        $stmt->execute(array(':tytuł' => $pozycja->getTytuł(),
+            ':rok_wydania' => $pozycja->getRokWydania(),
+            ':id_autor' => $pozycja->getIdAutor(),
             ':cena' => $pozycja->getCena(),
-            ':opis' => $pozycja->getOpis()
-        ));
+            ':opis' => $pozycja->getOpis(),
+            ':id_kategoria' => $pozycja->getIdKategoria()
+        )
+        );
 
         $affected_rows = $stmt->rowCount();
         if ($affected_rows == 1)
@@ -287,6 +292,35 @@ class database
         return FALSE;
     }
     
+    /*
+    public static function addPozycja($pozycja)
+    {
+        $tytuł = $pozycja->getTytuł();
+        $rok_wydania = $pozycja->getRokWydania();
+        $id_autor = $pozycja->getIdAutor();
+        $cena = $pozycja->getCena();
+        $opis = $pozycja->getOpis();
+        $id_kategoria = $pozycja->getIdKategoria();
+        $stmt = self::$db->prepare("INSERT INTO pozycja(tytuł, rok_wydania, id_autor, cena, opis, id_kategoria) "
+                . "VALUES(?, ?, ?, ?, ?, ?)");
+        
+        $stmt->execute(array(
+            'Dziady',
+            1394,
+            1,
+            30.30,
+            'coś tam coś tam',
+            3
+        )
+        );
+        $affected_rows = $stmt->rowCount();
+        if ($affected_rows == 1)
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
+    */
     //Pobranie listy pozycji książkowych
     public static function getPozycjaList()
     {
@@ -300,6 +334,14 @@ class database
         $stmt = self::$db->prepare('SELECT * FROM pozycja WHERE id_kategoria=?');
          $stmt->execute(array($idKategoria));
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    //Pobranie listy wg autora
+    public static function getPozycjaListByAutor($idAutor)
+    {
+        $stmt = self::$db->prepare('SELECT * FROM pozycja WHERE id_autor=?');
+        $stmt->execute(array($idAutor));
+        return $stmt-fetchAll(PDO::FETCH_ASSOC);
     }
     
     //Usuwanie pozycji
@@ -321,12 +363,17 @@ class database
         try
         {
             self::$db->beginTransaction();
-            $stmt = self::$db->prepare('UPDATE pozycja set nazwa=:nazwa, cena=:cena, '
+            $stmt = self::$db->prepare('UPDATE pozycja set tytuł=:tytuł,'
+                    . 'cena=:cena, '
+                    . 'rok_wydania=:rok_wydania'
+                    . 'id_autor=:id_autor'
                     . 'id_kategoria=:id_kategoria,'
                     . 'opis=:opis WHERE id_produkt=:id');
             $stmt->execute(array(
                 ':id' => $pozycja->getIdPozycja(),
-                ':nazwa' => $pozycja->getNazwa(),
+                ':tytuł' => $pozycja->getTytuł(),
+                ':rok_wydania' => $pozycja->getRokWydania(),
+                ':id_autor' => $pozycja->getIdAutor(),
                 ':id_kategorii' => $pozycja->getIdKategoria(),
                 ':opis' => $pozycja->getOpis(),
                 ':cena' => $pozycja->getCena()));
@@ -345,6 +392,71 @@ class database
         }
     }
     
+    ////////////////////////////////////////////////////////////////////////
+    //Autorzy//////////////////////
+    /////////////////////////////////////////////////////////////////////
+    
+    //Pobierz autora po ID
+    public static function getAutorById($id)
+    {
+        $stmt = self::$db->prepare('SELECT * FROM autorzy WHERE id_autor=?');
+        $stmt->execute(array($id));
+        if ($stmt->rowCount() > 0)
+        {
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $result = $results[0];
+           $autor = new Autor();
+           $autor->setIdAutor($result['id_autor']);
+           $autor->setImieNazwisko($result['imie_nazwisko']);
+           return $autor;
+        }
+    }
+    
+    //Dodaj autora
+    public static function addAutor($autor)
+    {
+        $stmt = self::$db->prepare("INSERT INTO autorzy(imie_nazwisko) "
+                . "VALUES(:imie_nazwisko)");
+        $stmt->execute(array(':imie_nazwisko' => $autor->getImieNazwisko()));
+        $affected_rows = $stmt->rowCount();
+        if ($affected_rows == 1) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
+    //Lista autorów
+    public static function getAutorList()
+    {
+        $stmt = self::$db->query('SELECT * FROM autorzy');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    //Usuniecie autora
+    public static function deleteAutor($autor)
+    {
+        $stmt = self::$db->prepare('DELETE FROM autorzy WHERE id_autor=?');
+        $stmt->execute(array($autor->getIdAutor()));
+        $affected_rows = $stmt->rowCount();
+        if ($affected_rows == 1) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
+    //Edycja autorów
+    public static function updateAutor($autor)
+    {
+        $stmt = self::$db->prepare('UPDATE autorzy set imie_nazwisko=? WHERE id_autor=?');
+        $stmt->execute(array($autor->getImieNazwisko(), $autor->getIdAutor()));
+        $affected_rows = $stmt->rowCount();
+        if ($affected_rows == 1)
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
     
     ///////////////////////////////////////////////////////////////////////
     //Zamowienia////////////////////
@@ -360,9 +472,9 @@ class database
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
             $zamowienie = new Zamowienie();
-            $zamowienie->setIdZamowienie($result['id_zamowienie']);
-            $pozycjaZamowienie = self::getPozycjaZamowienie($id);
-            $zamowienie->setPozycja($pozycjaZamowienie);
+            $zamowienie->setIdZamowienia($result['id_zamowienie']);
+            $pozycjaZamowienie = self::getPozycjaZamowienia($id);
+            $zamowienie->setPozycje($pozycjaZamowienie);
             $kwota = 0.0;
             foreach ($pozycjaZamowienie as $p)
             {
@@ -373,7 +485,6 @@ class database
             $zamowienie->setDataZamowienia($result['data_zamowienia']);
             $zamowienie->setIdKlienta($result['id_klienta']);
             $zamowienie->setStatus($result['status']);
-            $zamowienie->setUwagi($result['uwagi_dodatkowe']);
             return $zamowienie;
         }
     }
@@ -381,11 +492,10 @@ class database
     //Dodaj zamowienie
     public static function addZamowienie($zamowienie) 
     {
-        $stmt = self::$db->prepare("INSERT INTO zamowienie(id_klienta,uwagi_dodatkowe,status,data_zamowienia) "
-                . "VALUES(:id_klienta, :uwagi_dodatkowe, :status, now())");
+        $stmt = self::$db->prepare("INSERT INTO zamowienie(id_klienta ,status, data_zamowienia) "
+                . "VALUES(:id_klienta, :status, now())");
         $stmt->execute(array(
             ':id_klienta' => $zamowienie->getIdKlienta(),
-            ':uwagi_dodatkowe' => $zamowienie->getUwagi(),
             ':status' => $zamowienie->getStatus()
         ));
         $affected_rows = $stmt->rowCount();
@@ -394,12 +504,12 @@ class database
             $idZamowienia = self::$db->lastInsertId();
             if (!empty($idZamowienia)) 
             {
-                foreach ($zamowienie->getPozycja() as $pozycja)
+                foreach ($zamowienie->getPozycje() as $pozycje)
                 {
-                    $stmt = self::$db->prepare("INSERT INTO produkt_zamowienie(id_zamowienia, id_produktu) "
-                            . "VALUES(:id_zamowienie, :id_produktu)");
+                    $stmt = self::$db->prepare("INSERT INTO pozycja_zamowienie(id_zamowienie, id_pozycja) "
+                            . "VALUES(:id_zamowienie, :id_pozycja)");
                     $stmt->execute(array(
-                        ':id_produktu' => $pozycja->getIDPozycja(),
+                        ':id_pozycja' => $pozycje->getIdPozycja(),
                         ':id_zamowienie' => $idZamowienia,
                     )); 
                 }
@@ -431,7 +541,7 @@ class database
     ////////////////////////////////////////////////////////////////
     
     //Pobierz szczegoly zamowienia po id zamowienia
-    public static function getProduktyZamowienia($idZamowienie)
+    public static function getPozycjaZamowienia($idZamowienie)
     {
         $stmt = self::$db->prepare('SELECT * FROM pozycja_zamowienie WHERE id_zamowienie=?');
         $stmt->execute(array($idZamowienie));
@@ -439,12 +549,11 @@ class database
         $pozycje = array();
         foreach ($results as $row) 
         {
-            $idPozycja = $row['id_produktu'];
-            $pozycja = self::getProduktById($idPozycja);
-            $pozycjaZamowienia = new ProduktZamowienia();
+            $idPozycja = $row['id_pozycja'];
+            $pozycja = self::getPozycjaById($idPozycja);
+            $pozycjaZamowienia = new PozycjaZamowienia();
             $pozycjaZamowienia->setIdPozycja($idPozycja);
             $pozycjaZamowienia->setIdZamowienia($idZamowienie);
-            $pozycjaZamowienia->setIlosc($row['ilosc']);
             $pozycjaZamowienia->setPozycja($pozycja);
             $pozycje[] = $pozycjaZamowienia;
         }
@@ -485,6 +594,60 @@ class database
 
         $affected_rows = $stmt->rowCount();
         if ($affected_rows == 1)
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
+    ///////////////////////////////////////////////////
+    /////Zakupione/////
+    ////////////////////////////////////////////////
+    
+    
+    //Dodanie zakupione
+    public static function addZakupione($userId, $pozycjaId){
+        $stmt = self::$db->prepare('INSERT INTO zakupione VALUES (?, ?)');
+        $stmt->execute(array($userId, $pozycjaId));
+        
+        $affected_rows = $stmt->rowCount();
+        if ($affected_rows == 1)
+        {
+            return TRUE;
+        }
+        return FALSE;
+        
+    }
+    
+    //Lista zakupionych wg id użytkownika
+    public static function getZakupioneListByUser($user)
+    {
+        $stmt = self::$db->prepare('SELECT * FROM zakupione WHERE id_uzytkownik=?');
+        $stmt->execute(array($user->getId()));
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $zakupione = array();
+        foreach ($results as $row) 
+        {
+            $idPozycja = $row['id_pozycja'];
+            $pozycja = self::getPozycjaById($idPozycja);
+            $zakupiona = new Zakupione();
+            $zakupiona->setIdPozycja($idPozycja);
+            $zakupiona->setIdUzytkownik($user->getId());
+            $zakupiona->setPozycja($pozycja);
+            $zakupione[] = $zakupiona;
+        }
+        return $zakupione;
+    }
+   
+    //ilość występujących zakupionych dla danego użytkownika
+    public static function getZakupione($userId, $pozycjaId)
+    {
+        
+        $stmt = self::$db->prepare('SELECT * FROM zakupione WHERE (id_uzytkownik=?) AND (id_pozycja=?)');
+        $stmt->execute(array($userId, $pozycjaId));
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $affected_rows = $stmt->rowCount();
+        if ($affected_rows == 0)
         {
             return TRUE;
         }
