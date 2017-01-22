@@ -19,6 +19,7 @@ if (!empty($login)) {
  <div id="navbar" class="collapse navbar-collapse">
  <ul class="nav navbar-nav">
  <li><a href="/<?= APP_ROOT ?>/pozycja">Pozycje</a></li>
+ <li><a href="/<?= APP_ROOT ?>/autorzy">Autorzy</a></li>
  <li><a href="/<?= APP_ROOT ?>/kategoria">Kategorie</a></li>
  <li><a href="/<?= APP_ROOT ?>/zamowienie">Zamowienia</a></li>
  </ul>
@@ -43,7 +44,8 @@ if (!empty($login)) {
  <div id="navbar" class="collapse navbar-collapse">
  <ul class="nav navbar-nav">
  <li><a href="/<?= APP_ROOT ?>/zamowienie/moje_zamowienia">Zamowienia</a></li>
- <li><a href="/<?= APP_ROOT ?>/pozycja">Pozycje</a></li>
+ <li><a href="/<?= APP_ROOT ?>/zakupione">Pozycje Zakupione</a></li> 
+ <li><a href="/<?= APP_ROOT ?>/pozycja">Do kupienia</a></li>
  </ul>
  </div><!--/.nav-collapse -->
  </div>
