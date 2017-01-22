@@ -28,7 +28,7 @@ if (!$isAdmin) {
 <div class="table-responsive">
     <table id="pozycje" class="table table-bordered table-hover">
 
-            <tr><th>Nazwa</th><th>Cena</th><th>Kategoria</th><th>Opis</th><th>Dodaj do koszyka</th> 
+        <tr><th>Tytuł</th><th>Autor</th><th>Rok Wydania</th><th>Cena</th><th>Kategoria</th><th>Opis</th><th>Dodaj do koszyka</th> 
                 <?php
                 if ($isAdmin) {
                     ?>
@@ -38,16 +38,18 @@ if (!$isAdmin) {
                 ?>
             </tr>
             <?php
-            foreach ($pozycje as $pozycja) {
+            foreach ($pozycje as $zakupiona) {
                 echo '<tr>';
-                echo '<td>' . $pozycja->getNazwa() . '</td>';
-                echo '<td>' . $pozycja->getCena() . '</td>';
-                echo '<td>' . $pozycja->getKategoria()->getNazwa() . '</td>';
-                echo '<td>' . $pozycja->getOpis() . '</td>';
-                echo '<td><a href="koszyk/add/' . $pozycja->getIdPozycja() . '">Dodaj do koszyka</a></td>';
+                echo '<td>' . $zakupiona->getTytuł() . '</td>';
+                echo '<td>' . $zakupiona->getAutor()->getImieNazwisko() . '</td>';
+                echo '<td>' . $zakupiona->getRokWydania() . '</td>';
+                echo '<td>' . $zakupiona->getCena() . '</td>';
+                echo '<td>' . $zakupiona->getKategoria()->getNazwa() . '</td>';
+                echo '<td>' . $zakupiona->getOpis() . '</td>';
+                echo '<td><a href="koszyk/add/' . $zakupiona->getIdPozycja() . '">Dodaj do koszyka</a></td>';
                 if ($isAdmin) {
-                    echo '<td><a href="produkt/edit/' . $pozycja->getIdPozycja() . '">Edytuj</a></td>';
-                    echo '<td><a href="produkt/delete/' . $pozycja->getIdPozycja() . '">Usuń</a></td>';
+                    echo '<td><a href="pozycja/edit/' . $zakupiona->getIdPozycja() . '">Edytuj</a></td>';
+                    echo '<td><a href="pozycja/delete/' . $zakupiona->getIdPozycja() . '">Usuń</a></td>';
                 }
                 echo '</tr>';
             }
