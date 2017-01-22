@@ -4,14 +4,12 @@ class Zamowienie
 {
     //
     private $idZamowienia;
-    private $idKlienta;
+    private $idKlient;
     private $cena;
     private $dataZamowienia;
     private $dataRealizacji;
     private $status;  //nowe, zaplacone, zrealizowane     
     private $pozycje;
-    private $adres;
-    private $uwagi;
     
     //metody
     public function getCena()
@@ -31,7 +29,7 @@ class Zamowienie
         
     public function getIdKlienta()
     {
-        return $this->idKlienta;
+        return $this->idKlient;
     }
                
     public function getDataZamowienia()
@@ -61,7 +59,7 @@ class Zamowienie
         
     public function setIdKlienta($idKlienta)
     {
-        $this->idKlienta = $idKlienta;
+        $this->idKlient = $idKlienta;
     }
     
     public function setDataZamowienia($dataZamowienia)
