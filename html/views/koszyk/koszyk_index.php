@@ -2,14 +2,13 @@
 <form method="POST" action="/<?= APP_ROOT ?>/koszyk/edit">
 <div class="table-responsive">
  <table class="table table-bordered table-hover">
- <tr><th>Nazwa</th><th>Cena</th><th>Ilość</th><th>Usuń</th> </tr>
+ <tr><th>Tytuł</th><th>Cena</th><th>Usuń</th> </tr>
  <?php
- for ($i = 0; $i < count($produkty); $i++) {
+ for ($i = 0; $i < count($pozycje); $i++) {
  echo '<tr>';
- echo '<td>' . $produkty[$i]->getNazwa() . '</td>';
- echo '<td>' . $produkty[$i]->getCena() . '</td>';
- echo '<td> <input class="form-control" type="text" name="'. $produkty[$i]->getIdPozycja() .'" value="'. $ilosci[$i] .'"/></td>';
- echo '<td><a href="koszyk/delete/' . $produkty[$i]->getIdPozycja() . '">Usuń</a></td>';
+ echo '<td>' . $pozycje[$i]->getTytuł() . '</td>';
+ echo '<td>' . $pozycje[$i]->getCena() . '</td>';
+ echo '<td><a href="koszyk/delete/' . $pozycje[$i]->getIdPozycja() . '">Usuń</a></td>';
  echo '</tr>';
  }
  ?>
