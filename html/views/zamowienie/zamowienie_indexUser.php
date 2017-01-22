@@ -5,10 +5,7 @@
 <table class="table table-bordered table-hover">
     <tr>
         <th>
-            Id
-        </th>
-        <th>
-            Produkty
+            Pozycje
         </th>
         <th>
             Cena
@@ -27,12 +24,11 @@
     <?php
     foreach ($zamowienia as $zamowienie) {
         echo '<tr>';
-        echo '<td>' . $zamowienie->getIdZamowienia() . '</td>';
         echo '<td><div class="table-responsive"><table class="table table-bordered">'
-        . '<tr><th>Nazwa</th><th>Cena</th></tr>';
+        . '<tr><th>Tytuł</th><th>Cena</th></tr>';
         foreach ($zamowienie->getPozycje() as $pozycjaZamowienie) {
             echo '<tr>';
-            echo '<td>' . $pozycjaZamowienie->getPozycja()->getNazwa() . '</td>';
+            echo '<td>' . $pozycjaZamowienie->getPozycja()->getTytuł() . '</td>';
             echo '<td>' . $pozycjaZamowienie->getPozycja()->getCena() . '</td>';
             echo '</tr>';
         }
