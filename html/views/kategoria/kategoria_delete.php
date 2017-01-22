@@ -4,7 +4,7 @@ $nazwa = "";
 $id = "";
 if (!empty($model)) {
  $nazwa = $model->getNazwa();
- $id = $model->getIdKategorii();
+ $id = $model->getIdKategoria();
 }
 ?>
 <h3>Czy na pewno chcesz usunąć kategorię: <b><?=$nazwa?></b>?</h3>
