@@ -18,8 +18,23 @@ if (!empty($error)) {
 
 <form method="POST" action="/<?= APP_ROOT ?>/pozycja/add">
     <div class="form-group">
-        <label>Nazwa </label>
-        <input type="text" name="nazwa"   class="form-control" />
+        <label>Tytuł </label>
+        <input type="text" name="tytuł"   class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Autor </label>
+        <select name="autor" class="form-control">
+            <?php
+            foreach ($autorzy as $autor) {
+                echo '<option value="' . $autor['id_autor'] . '">' . $autor['imie_nazwisko'] . '</option>';
+            }
+            ?>
+        </select>
+        <br />               
+    </div>
+    <div class="form-group">
+        <label>Rok wydania </label>
+        <input type="text" name="rok_wydania" class="form-control" />
     </div>
     <div class="form-group">
         <label>Cena </label>
