@@ -36,7 +36,7 @@
             . '<tr><th>Nazwa</th><th>Cena</th></tr>';
             foreach ($zamowienie->getPozycje() as $pozycjaZamowienie) {
                 echo '<tr>';
-                echo '<td>' . $pozycjaZamowienie->getPozycja()->getNazwa() . '</td>';
+                echo '<td>' . $pozycjaZamowienie->getPozycja()->getTytuł() . '</td>';
                 echo '<td>' . $pozycjaZamowienie->getPozycja()->getCena() . '</td>';
                 echo '</tr>';
             }
