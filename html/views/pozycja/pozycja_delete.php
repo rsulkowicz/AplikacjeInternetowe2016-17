@@ -4,7 +4,7 @@
 $nazwa = "";
 $id = "";
 if (!empty($model)) {
-    $nazwa = $model->getNazwa();
+    $nazwa = $model->getTytuł();
     $id = $model->getIdPozycja();
 }
 ?>
