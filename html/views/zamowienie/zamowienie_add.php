@@ -24,7 +24,7 @@ if (!empty($error)) {
             <table class="table table-bordered table-hover">
                 <tr> 
                     <td>
-                        Nazwa
+                        Tytuł
                     </td>
                     <td>
                         Cena
@@ -34,12 +34,11 @@ if (!empty($error)) {
                     </td>
                 </tr>
                 <?php
-                for ($i = 0; $i < count($produkty); $i++) {
+                for ($i = 0; $i < count($pozycje); $i++) {
                     echo '<tr>';
-                    echo '<td>' . $ilosci[$i] . '</td>';
-                    echo '<td>' . $produkty[$i]->getNazwa() . '</td>';
-                    echo '<td>' . $produkty[$i]->getCena() . '</td>';
-                    echo '<td>' . $produkty[$i]->getKategoria()->getNazwa() . '</td>';
+                    echo '<td>' . $pozycje[$i]->getTytuł() . '</td>';
+                    echo '<td>' . $pozycje[$i]->getCena() . '</td>';
+                    echo '<td>' . $pozycje[$i]->getKategoria()->getNazwa() . '</td>';
                     echo '</tr>';
                 }
                 ?>
