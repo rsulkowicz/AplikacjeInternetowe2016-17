@@ -4,7 +4,10 @@ class Pozycja
 {
 //atrybuty
     private $idPozycja;
-    private $nazwa;
+    private $tytuł;
+    private $rokWydania;
+    private $idAutor;
+    private $autor;
     private $idKategoria;
     private $cena;
     private $opis;
@@ -22,14 +25,44 @@ class Pozycja
         
     }
     
+    public function getRokWydania()
+    {
+        return $this->rokWydania;
+    }
+    
+    public function setRokWydania($rokWydania)
+    {
+        $this->rokWydania = $rokWydania;
+    }
+    
+    public function getIdAutor()
+    {
+        return $this->idAutor;
+    }
+    
+    public function setIdAutor($idAutor)
+    {
+        $this->idAutor = $idAutor;
+    }
+    
+    public function getAutor()
+    {
+        return $this->autor;
+    }
+    
+    public function setAutor($autor)
+    {
+        $this->autor = $autor;
+    }
+    
     public function getIdPozycja()
     {
         return $this->idPozycja;
     }
     
-    public function getNazwa()
+    public function getTytuł()
     {
-        return $this->nazwa;
+        return $this->tytuł;
     }
     
     public function getIdKategoria()
@@ -52,9 +85,9 @@ class Pozycja
         $this->idPozycja = $idPozycja;
     }
     
-    public function setNazwa($nazwa)
+    public function setTytuł($tytuł)
     {
-        $this->nazwa = $nazwa;
+        $this->tytuł = $tytuł;
     }
     
     public function setIdKategoria($idKategoria)
@@ -71,6 +104,7 @@ class Pozycja
     {
         $this->opis = $opis;
     }
+    
     
 }
 ?>
