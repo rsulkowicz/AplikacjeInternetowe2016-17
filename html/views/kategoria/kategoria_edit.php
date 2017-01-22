@@ -13,7 +13,7 @@ $nazwa = "";
 $id = "";
 if (!empty($model)) {
  $nazwa = $model->getNazwa();
- $id = $model->getIdKategorii(); } ?>
+ $id = $model->getIdKategoria(); } ?>
 <form method="POST" action="/<?= APP_ROOT ?>/kategoria/edit">
  <div class="form-group">
  <label>Nazwa </label>
